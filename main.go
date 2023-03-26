@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"html/template"
 	"io/ioutil"
-	"log"
 	"net/http"
 	"os"
 	"strconv"
@@ -37,7 +36,7 @@ func (u update) IdAsInt() int {
 func main() {
 	err := godotenv.Load()
 	if err != nil {
-		log.Fatal("Error loading .env file")
+		//log.Fatal("Error loading .env file")
 	}
 
 	router := gin.Default()
@@ -83,6 +82,7 @@ func main() {
 		return
 	})
 
+	fmt.Println("Server startet!")
 	listenOn := os.Getenv("LISTENON")
 	router.Run(listenOn)
 }
