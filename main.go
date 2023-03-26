@@ -5,12 +5,14 @@ import (
 	"fmt"
 	"html/template"
 	"io/ioutil"
+	"log"
 	"net/http"
 	"os"
 	"strconv"
 	"strings"
 
 	"github.com/gin-gonic/gin"
+	"github.com/joho/godotenv"
 )
 
 type item struct {
@@ -33,6 +35,11 @@ func (u update) IdAsInt() int {
 }
 
 func main() {
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal("Error loading .env file")
+	}
+
 	router := gin.Default()
 	router.SetFuncMap(template.FuncMap{
 		"upper": strings.ToUpper,
@@ -76,7 +83,8 @@ func main() {
 		return
 	})
 
-	router.Run("localhost:8181")
+	listenOn := os.Getenv("LISTENON")
+	router.Run(listenOn)
 }
 
 func readDatafileToStruct() []item {
