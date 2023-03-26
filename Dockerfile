@@ -3,7 +3,7 @@ FROM golang:1.20-bullseye AS builder
 RUN go install golang.org/dl/go1.20@latest \
     && go1.20 download
 
-COPY . /app/
+COPY . / /app/
 
 WORKDIR /app/
 
