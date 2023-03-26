@@ -9,9 +9,9 @@ WORKDIR /src/
 
 RUN go mod download
 
-RUN GOOS=linux GOARCH=amd64 go build -ldflags="-w -s" -o /app/bin/server /src/main.go
+RUN GOOS=linux GOARCH=amd64 go build -ldflags="-w -s" -o /go/bin/server /src/main.go
 FROM alpine:latest
 
-COPY --from=builder /app/bin/* /app/bin/
+COPY --from=builder /go/bin/* /go/bin/
 
-CMD /app/bin/server
+CMD /go/bin/server
