@@ -10,7 +10,7 @@ WORKDIR /src/
 RUN go mod download
 
 RUN GOOS=linux GOARCH=amd64 go build -ldflags="-w -s" -o /go/bin/server /src/main.go
-FROM alpine:latest
+FROM gcr.io/distroless/base-debian11
 
 COPY --from=builder /go/bin/* /go/bin/
 
