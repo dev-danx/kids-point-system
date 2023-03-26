@@ -1,6 +1,7 @@
 package main
 
 import (
+	"embed"
 	"encoding/json"
 	"fmt"
 	"html/template"
@@ -33,27 +34,31 @@ func (u update) IdAsInt() int {
 	return i
 }
 
+//go:embed templates/*
+var f embed.FS
+
 func main() {
 	err := godotenv.Load()
 	if err != nil {
 		//log.Fatal("Error loading .env file")
 	}
 
+	templ := template.Must(template.New("").ParseFS(f, "templates/*.tmpl"))
+
 	router := gin.Default()
+	router.SetHTMLTemplate(templ)
 	router.SetFuncMap(template.FuncMap{
 		"upper": strings.ToUpper,
 	})
-	router.Static("/assets", "./assets")
-	router.LoadHTMLGlob("templates/*.html")
-
 	router.GET("/", func(c *gin.Context) {
-		c.HTML(http.StatusOK, "dashboard.html", gin.H{
+
+		c.HTML(http.StatusOK, "dashboard.tmpl", gin.H{
 			"items": readDatafileToStruct(),
 		})
 	})
 
 	router.GET("/admin", func(c *gin.Context) {
-		c.HTML(http.StatusOK, "admin.html", gin.H{
+		c.HTML(http.StatusOK, "admin.tmpl", gin.H{
 			"items": readDatafileToStruct(),
 		})
 	})
