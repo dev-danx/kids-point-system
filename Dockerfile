@@ -7,7 +7,6 @@ COPY . /go/
 
 WORKDIR /go/
 
-RUN go mod download
 RUN GOOS=linux GOARCH=amd64 go build -ldflags="-w -s" -o /go/bin/app /go/main.go
 FROM alpine:latest
 
