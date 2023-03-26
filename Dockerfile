@@ -14,4 +14,4 @@ FROM gcr.io/distroless/base-debian11
 
 COPY --from=builder /go/bin/* /go/bin/
 
-CMD /go/bin/server
+ENTRYPOINT ["/go/bin/server"]
