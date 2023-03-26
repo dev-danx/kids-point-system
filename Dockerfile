@@ -7,9 +7,9 @@ COPY . /app/
 
 WORKDIR /app/
 
-RUN GOOS=linux GOARCH=amd64 go build -ldflags="-w -s" -o /go/bin/app /app/main.go
+RUN GOOS=linux GOARCH=amd64 go build -ldflags="-w -s" -o /app/bin/app /app/main.go
 FROM alpine:latest
 
-COPY --from=builder /go/bin/* /go/bin/
+COPY --from=builder /app/bin/* /app/bin/
 
-CMD /go/bin/app
+CMD /app/bin/app
