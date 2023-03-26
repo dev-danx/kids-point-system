@@ -13,7 +13,7 @@ RUN GOOS=linux GOARCH=amd64 go build -ldflags="-w -s" -o /go/bin/server /src/mai
 FROM gcr.io/distroless/base-debian11
 
 COPY --from=builder /go/bin/* /go/bin/
-COPY --from=builder /src/template/* /go/bin/template/
+COPY --from=builder /src/templates/* /go/bin/templates/
 COPY --from=builder /src/data.json /go/bin/data.json
 
 ENTRYPOINT ["/go/bin/server"]
