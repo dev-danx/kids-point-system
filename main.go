@@ -15,10 +15,16 @@ import (
 	"github.com/joho/godotenv"
 )
 
+type task struct {
+	Id          int32
+	Description string
+}
+
 type item struct {
 	Id    int32
 	Name  string
 	Point int32
+	Tasks []task
 }
 
 type update struct {
@@ -63,6 +69,22 @@ func main() {
 		})
 	})
 
+	router.GET("/today", func(c *gin.Context) {
+		userIdString := c.Query("userId")
+		userId, _ := strconv.Atoi(userIdString)
+		fmt.Println("UserId:", userId)
+		users := readDatafileToStruct()
+		var tasks []task
+		for _, el := range users {
+			if el.Id == int32(userId) {
+				tasks = el.Tasks
+			}
+		}
+		c.HTML(http.StatusOK, "today.tmpl", gin.H{
+			"tasks": tasks,
+		})
+	})
+
 	router.POST("/update", func(c *gin.Context) {
 		fmt.Println("Update Received")
 		var updateItem update
@@ -90,6 +112,26 @@ func main() {
 	fmt.Println("Server startet!")
 	listenOn := os.Getenv("LISTENON")
 	router.Run(listenOn)
+}
+
+func readTasks() []task {
+	// Open our jsonFile
+	jsonFile, err := os.Open("tasks.json")
+	// if we os.Open returns an error then handle it
+	if err != nil {
+		fmt.Println(err)
+	}
+	fmt.Println("Successfully Opened tasks.json")
+	// defer the closing of our jsonFile so that we can parse it later on
+	defer jsonFile.Close()
+
+	byteValue, _ := ioutil.ReadAll(jsonFile)
+
+	// we initialize our array
+	var result []task
+
+	json.Unmarshal(byteValue, &result)
+	return result
 }
 
 func readDatafileToStruct() []item {
