@@ -100,6 +100,10 @@ func main() {
 		updateData(items)
 	})
 
+	router.POST("createTask/:userId", func(ctx *gin.Context) {
+
+	})
+
 	router.GET("/today", func(c *gin.Context) {
 		userIdString := c.Query("userId")
 		userId, _ := strconv.Atoi(userIdString)

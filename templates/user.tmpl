@@ -12,7 +12,7 @@
           <input class="form-control" id="date" data-date="2023-04-06" aria-describedby="emailHelp" placeholder="">
             
             <label for="exampleInputEmail1">Name</label>
-            <input class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter Task Description">
+            <input class="form-control" id="desc" aria-describedby="emailHelp" placeholder="Enter Task Description">
             <label for="taskPoint">Point</label>
             <input type="number" class="form-control" id="taskPoint" placeholder="Enter point">
         </div><br>
@@ -41,7 +41,21 @@
           autohide:false,
           format: "yyyy-mm-dd"
         })
-        // const elem = document.querySelector('input[name="foo"]');
-        // const datepicker = new Datepicker(elem, { // ...options
-        // });
+        function createTask() {
+            date = $("#date").val()
+            desc = $("#desc").val()
+            point = $("#taskPoint").val()
+            axios.post('/createTask', {
+              userId: 1,
+              date: date,
+              desc: desc,
+              point: point
+            })
+            .then(function (response) {
+                console.log(response);
+            }).catch(function (error) {
+                console.log(error);
+            }). finally(function () { // always executed
+            });
+        }
 </script>
