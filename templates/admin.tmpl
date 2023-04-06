@@ -4,6 +4,11 @@
 
     </head>
     <body>
+        <div class="form-group">
+            <label for="exampleInputEmail1">Name</label>
+            <input class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter Name">
+        </div><br>
+        <button class="btn btn-primary" onclick="createUser()">Create</button>
         <table class="table">
             <thead>
                 <th>Name</th>
@@ -43,6 +48,18 @@
             }).then(function (response) { // handle success
                 console.log(response);
             }).catch(function (error) { // handle error
+                console.log(error);
+            }). finally(function () { // always executed
+            });
+        }
+
+        function createUser() {
+            name = $("#exampleInputEmail1").val()
+            console.log("Name:" + name)
+            axios.get('/createItem/' + name)
+            .then(function (response) {
+                console.log(response);
+            }).catch(function (error) {
                 console.log(error);
             }). finally(function () { // always executed
             });

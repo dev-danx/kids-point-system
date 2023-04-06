@@ -10,12 +10,14 @@ import (
 	"os"
 	"strconv"
 	"strings"
+	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 )
 
 type task struct {
+	Date        time.Time
 	Id          int32
 	Description string
 }
@@ -56,6 +58,7 @@ func main() {
 	router.SetFuncMap(template.FuncMap{
 		"upper": strings.ToUpper,
 	})
+
 	router.GET("/", func(c *gin.Context) {
 
 		c.HTML(http.StatusOK, "dashboard.tmpl", gin.H{
@@ -69,6 +72,19 @@ func main() {
 		})
 	})
 
+	router.GET("/createItem/:name", func(ctx *gin.Context) {
+		name := ctx.Param("name")
+		items := readDatafileToStruct()
+		var nextId int32
+		for _, el := range items {
+			nextId = el.Id
+		}
+		nextId++
+		items = append(items, item{Id: nextId, Name: name, Point: 100})
+		fmt.Println("Saving New item")
+		updateData(items)
+	})
+
 	router.GET("/today", func(c *gin.Context) {
 		userIdString := c.Query("userId")
 		userId, _ := strconv.Atoi(userIdString)
@@ -80,6 +96,7 @@ func main() {
 				tasks = el.Tasks
 			}
 		}
+
 		c.HTML(http.StatusOK, "today.tmpl", gin.H{
 			"tasks": tasks,
 		})
