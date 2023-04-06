@@ -1,0 +1,47 @@
+<html>
+    <head>
+      <script src="https://code.jquery.com/jquery-3.6.4.min.js" integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script> 
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/js/bootstrap.bundle.min.js" integrity="sha384-qKXV1j0HvMUeCBQ+QVp7JcfGl760yU08IQ+GpUo5hlbpg51QRiuqHAJz8+BrxE/N" crossorigin="anonymous"></script>
+        <link href="https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vanillajs-datepicker@1.3.1/dist/css/datepicker.min.css">
+        <script src="https://cdn.jsdelivr.net/npm/vanillajs-datepicker@1.3.1/dist/js/datepicker-full.min.js"></script>
+      </head>
+    <body id="app">
+        <div class="form-group">
+          <input class="form-control" id="date" data-date="2023-04-06" aria-describedby="emailHelp" placeholder="">
+            
+            <label for="exampleInputEmail1">Name</label>
+            <input class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter Task Description">
+            <label for="taskPoint">Point</label>
+            <input type="number" class="form-control" id="taskPoint" placeholder="Enter point">
+        </div><br>
+        <button class="btn btn-primary" onclick="createUser()">Create</button>
+        <table class="table">
+            <thead>
+                <th>Date</th>
+                <th>Task</th>
+                <th>Actions</th>
+            </thead>
+            <tbody>
+                {{range .tasks}}
+                    <tr>
+                        <td>{{.Date}}</td>
+                        <td>{{.Description}}</td>
+                        <td><input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"></td>
+                    </tr>
+                {{end}}
+            </tbody>
+        </table>
+    </body>
+</html>
+<script>
+        const elem = document.getElementById("date");
+        const datepicker = new Datepicker(elem, {
+          autohide:false,
+          format: "yyyy-mm-dd"
+        })
+        // const elem = document.querySelector('input[name="foo"]');
+        // const datepicker = new Datepicker(elem, { // ...options
+        // });
+</script>

@@ -72,6 +72,21 @@ func main() {
 		})
 	})
 
+	router.GET("/user/:userId", func(c *gin.Context) {
+		userId := c.GetInt("userId")
+		fmt.Println("UserId:", userId)
+		users := readDatafileToStruct()
+		var tasks []task
+		for _, el := range users {
+			if el.Id == int32(userId) {
+				tasks = el.Tasks
+			}
+		}
+		c.HTML(http.StatusOK, "user.tmpl", gin.H{
+			"tasks": tasks,
+		})
+	})
+
 	router.GET("/createItem/:name", func(ctx *gin.Context) {
 		name := ctx.Param("name")
 		items := readDatafileToStruct()
