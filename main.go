@@ -22,11 +22,40 @@ type task struct {
 	Description string
 }
 
+type newTask struct {
+	Date  string
+	Desc  string
+	Point string
+}
+
+func (nt newTask) ToTask() task {
+	result := task{}
+	date, err := time.Parse("2006-01-02", nt.Date)
+	if err != nil {
+		fmt.Println(err)
+	}
+	result.Description = nt.Desc
+	result.Date = date
+	//pointInt, err := strconv.Atoi(nt.Point)
+
+	return result
+}
+
 type item struct {
 	Id    int32
 	Name  string
 	Point int32
 	Tasks []task
+}
+
+func (i item) AddTask(t task) {
+	nextId := 0
+	for _, task := range i.Tasks {
+		nextId = int(task.Id)
+	}
+	nextId++
+	t.Id = int32(nextId)
+	i.Tasks = append(i.Tasks, t)
 }
 
 type update struct {
@@ -57,6 +86,10 @@ func main() {
 	router.SetHTMLTemplate(templ)
 	router.SetFuncMap(template.FuncMap{
 		"upper": strings.ToUpper,
+	})
+
+	router.GET("/Backup", func(ctx *gin.Context) {
+		ctx.JSON(http.StatusOK, readDatafileToStruct())
 	})
 
 	router.GET("/", func(c *gin.Context) {
@@ -101,6 +134,15 @@ func main() {
 	})
 
 	router.POST("createTask/:userId", func(ctx *gin.Context) {
+		userId := ctx.GetInt("userId")
+		newTask := newTask{}
+		ctx.BindJSON(newTask)
+		users := readDatafileToStruct()
+		for _, el := range users {
+			if el.Id == int32(userId) {
+				el.AddTask(newTask.ToTask())
+			}
+		}
 
 	})
 
@@ -201,5 +243,4 @@ func updateData(items []item) {
 		f.WriteString(string(j))
 		fmt.Println("Updated json file", string(j))
 	}
-
 }

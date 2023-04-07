@@ -46,10 +46,9 @@
             desc = $("#desc").val()
             point = $("#taskPoint").val()
             axios.post('/createTask', {
-              userId: 1,
-              date: date,
-              desc: desc,
-              point: point
+              Date: date,
+              Desc: desc,
+              Point: point
             })
             .then(function (response) {
                 console.log(response);
